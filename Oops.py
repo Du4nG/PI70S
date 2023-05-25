@@ -5,11 +5,9 @@ class SEDGe:
     def __init__(self, sedge_path):
         self._sedge_path = sedge_path
 
-
     @property
     def sedge_path(self):
         return self._sedge_path
-    
 
     @sedge_path.setter
     def sedge_path(self, new_path):
@@ -22,21 +20,19 @@ class Validation(SEDGe):
         super().__init__(parent)
         self._indexU_path = self.sedge_path + '\\testdata\FUSION_Platform\ctcReport\indexU.html'
 
-
-    def find_missing_init(self) -> list:
+    def find_missing_inits(self) -> list:
         with open(self._indexU_path, 'r') as file:
             content = file.read()
         pattern = r'FUNCTION\s+(\w+)\('
         missing_inits = re.findall(pattern, content)
         return missing_inits
 
-
     def add_missing_inits(self) -> None:
-        missing_inits = self.find_missing_init()
-        with open('test.c', 'r') as file:
+        missing_inits = self.find_missing_inits()
+        with open('PI70S/test.c', 'r') as file:
             lines = file.readlines()
 
-        with open('test.c', 'w') as file:
+        with open('PI70S/test.c', 'w') as file:
             for line in lines:
                 if '//Added' in line:
                     continue
