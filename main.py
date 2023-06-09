@@ -1,14 +1,17 @@
 import os
 from tools import *
-from os.path import isdir
+from os.path import isdir, basename, normpath
 
 os.system('cls')
 
 EXIT = 0
 SEDGE_PATH = input('Enter SEDGe path: ')
+FC_PATH = basename(normpath(SEDGE_PATH))
+
 assert isdir(SEDGE_PATH), 'Invalid path'
 
-path = SEDGe(SEDGE_PATH)
+
+path = SEDGe(SEDGE_PATH, FC_PATH)
 tool_list = {
     1 : path.find_missing_inits,
     2 : path.add_missing_inits,
@@ -26,6 +29,6 @@ while 1:
         break
 
     selected_method = tool_list.get(selection)
-
     selected_method()
-    input("Press any key to continue...")
+    
+    input("\nPress any key to continue...")

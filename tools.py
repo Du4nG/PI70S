@@ -4,8 +4,9 @@ import re
 SCHEDULER_PATH = '/_targets/default/tpt_scheduler.c'
 
 class Path:
-    def __init__(self, sedge_path):
+    def __init__(self, sedge_path, fc_path):
         self._sedge_path = sedge_path
+        self._fc_path = fc_path
 
     @property
     def sedge_path(self):
@@ -17,17 +18,18 @@ class Path:
 
 
 class SEDGe(Path):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self._indexU_path = self.sedge_path + '\\testdata\FUSION_Platform\ctcReport\indexU.html'
+    def __init__(self,sedge_path, fc_path):
+        super().__init__(sedge_path, fc_path)
+        self._indexU_path = self._sedge_path + '\\testdata\FUSION_Platform\ctcReport\indexU.html'
 
     def find_missing_inits(self) -> list:
         with open(self._indexU_path, 'r') as file:
             content = file.read()
+
         pattern = r'FUNCTION\s+(\w+)\('
         missing_inits = re.findall(pattern, content)
-        print(missing_inits)
 
+        print('\n',missing_inits)
         return missing_inits
 
     def add_missing_inits(self) -> None:
@@ -45,3 +47,10 @@ class SEDGe(Path):
                     for init in missing_inits:
                         file.write('\t'+ init + '(); //Added\n')
                 file.write(line)
+
+class FC(Path):
+    def __init__(self,sedge_path, fc_path):
+        super().__init__(sedge_path, fc_path)
+
+    def copy(self) -> None:
+        pass
